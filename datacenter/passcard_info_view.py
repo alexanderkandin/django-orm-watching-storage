@@ -4,7 +4,6 @@ from django.shortcuts import render
 import locale
 
 
-
 def passcard_info_view(request, passcode):
     locale.setlocale(locale.LC_TIME, 'russian')
 
@@ -13,7 +12,6 @@ def passcard_info_view(request, passcode):
     except Passcard.DoesNotExist:
         print("Нет такого ID")
         passcard = None
-
 
     if passcard:
         visits = Visit.objects.filter(passcard=passcard)
@@ -28,7 +26,6 @@ def passcard_info_view(request, passcode):
                 'duration': formatted_duration,
                 'is_strange': is_strange
             })
-
 
     context = {
         'passcard': passcard,
