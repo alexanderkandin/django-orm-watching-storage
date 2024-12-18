@@ -10,23 +10,19 @@ import locale
 def passcard_info_view(request, passcode):
     locale.setlocale(locale.LC_TIME, 'russian')
 
-
     passcard = get_object_or_404(Passcard,passcode=passcode)
+    visits = Visit.objects.filter(passcard=passcard)
+    this_passcard_visits = []
+    for visit in visits:
+        duration = get_duration(visit)
+        formatted_duration = format_duration(duration)
+        is_strange = is_visit_long(duration.total_seconds())
 
-
-    if passcard:
-        visits = Visit.objects.filter(passcard=passcard)
-        this_passcard_visits = []
-        for visit in visits:
-            duration = get_duration(visit)
-            formatted_duration = format_duration(duration)
-            is_strange = is_visit_long(duration.total_seconds())
-
-            this_passcard_visits.append({
-                'entered_at': visit.entered_at.strftime("%d %B %Yг %H:%M"),
-                'duration': formatted_duration,
-                'is_strange': is_strange
-            })
+        this_passcard_visits.append({
+            'entered_at': visit.entered_at.strftime("%d %B %Yг %H:%M"),
+            'duration': formatted_duration,
+            'is_strange': is_strange
+        })
 
     context = {
         'passcard': passcard,
