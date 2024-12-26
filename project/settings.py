@@ -1,9 +1,14 @@
 import os
-from dotenv import load_dotenv
+from environs import Env
 
-load_dotenv()
-PASSWORD_DB = os.getenv("PASSWORD_DB")
-LOGIN_DB = os.getenv("LOGIN_DB")
+
+env = Env()
+env.read_env()
+
+# Получение значений переменных
+key = env.str('KEY')
+PASSWORD_DB = env.str('PASSWORD_DB')
+LOGIN_DB = env.str('LOGIN_DB')
 
 DATABASES = {
     'default': {
@@ -20,7 +25,7 @@ INSTALLED_APPS = ['datacenter']
 
 SECRET_KEY = os.getenv("KEY")
 
-DEBUG = True
+DEBUG = env.bool('DJANGO_DEBUG', default=False)
 
 ROOT_URLCONF = 'project.urls'
 
