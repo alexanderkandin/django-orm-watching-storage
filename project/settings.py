@@ -5,10 +5,6 @@ from environs import Env
 env = Env()
 env.read_env()
 
-# Получение значений переменных
-key = env.str('KEY')
-PASSWORD_DB = env.str('PASSWORD_DB')
-LOGIN_DB = env.str('LOGIN_DB')
 
 DATABASES = {
     'default': {
@@ -16,14 +12,14 @@ DATABASES = {
         'HOST': 'checkpoint.devman.org',
         'PORT': '5434',
         'NAME': 'checkpoint',
-        'USER': LOGIN_DB,
-        'PASSWORD': PASSWORD_DB,
+        'USER': env.str('LOGIN_DB'),
+        'PASSWORD': env.str('PASSWORD_DB'),
     }
 }
 
 INSTALLED_APPS = ['datacenter']
 
-SECRET_KEY = os.getenv("KEY")
+SECRET_KEY = env.str('KEY')
 
 DEBUG = env.bool('DJANGO_DEBUG', default=False)
 
